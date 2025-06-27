@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คำนวณค่าโอที</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 30px;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>เครื่องคำนวณค่าโอที</h2>
+    <label for="wage">ค่าแรงต่อวัน (บาท):</label>
+    <input type="number" id="wage" placeholder="เช่น 325">
+
+    <label for="ot1_5">จำนวนชั่วโมง OT x1.5:</label>
+    <input type="number" id="ot1_5" placeholder="เช่น 2">
+
+    <label for="ot2_0">จำนวนชั่วโมง OT x2.0:</label>
+    <input type="number" id="ot2_0" placeholder="เช่น 1">
+
+    <label for="ot3_0">จำนวนชั่วโมง OT x3.0:</label>
+    <input type="number" id="ot3_0" placeholder="เช่น 0.5">
+
+    <button onclick="calculateOT()">คำนวณ</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateOT() {
+      const wage = parseFloat(document.getElementById("wage").value);
+      const ot1_5 = parseFloat(document.getElementById("ot1_5").value) || 0;
+      const ot2_0 = parseFloat(document.getElementById("ot2_0").value) || 0;
+      const ot3_0 = parseFloat(document.getElementById("ot3_0").value) || 0;
+
+      if (isNaN(wage)) {
+        document.getElementById("result").textContent = "กรุณากรอกค่าแรงให้ถูกต้อง";
+        return;
+      }
+
+      const hourlyRate = wage / 8;
+      const otPay1_5 = hourlyRate * 1.5 * ot1_5;
+      const otPay2_0 = hourlyRate * 2.0 * ot2_0;
+      const otPay3_0 = hourlyRate * 3.0 * ot3_0;
+      const totalOT = otPay1_5 + otPay2_0 + otPay3_0;
+
+      document.getElementById("result").innerHTML = `
+        ค่าโอทีที่ได้รับ:<br>
+        OT x1.5: ${otPay1_5.toFixed(2)} บาท<br>
+        OT x2.0: ${otPay2_0.toFixed(2)} บาท<br>
+        OT x3.0: ${otPay3_0.toFixed(2)} บาท<br>
+        <strong>รวมทั้งหมด: ${totalOT.toFixed(2)} บาท</strong>
+      `;
+    }
+  </script>
+</body>
+</html>
