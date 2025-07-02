@@ -49,6 +49,9 @@
     <label for="wage">ค่าแรงต่อวัน (บาท):</label>
     <input type="number" id="wage" placeholder="เช่น 325">
 
+    <label for="workDays">จำนวนวันที่ทำงาน:</label>
+    <input type="number" id="workDays" placeholder="เช่น 22">
+
     <label for="ot1_5">จำนวนชั่วโมง OT x1.5:</label>
     <input type="number" id="ot1_5" placeholder="เช่น 2">
 
@@ -66,6 +69,7 @@
   <script>
     function calculateOT() {
       const wage = parseFloat(document.getElementById("wage").value);
+      const workDays = parseFloat(document.getElementById("workDays").value) || 0;
       const ot1_5 = parseFloat(document.getElementById("ot1_5").value) || 0;
       const ot2_0 = parseFloat(document.getElementById("ot2_0").value) || 0;
       const ot3_0 = parseFloat(document.getElementById("ot3_0").value) || 0;
@@ -80,13 +84,17 @@
       const otPay2_0 = hourlyRate * 2.0 * ot2_0;
       const otPay3_0 = hourlyRate * 3.0 * ot3_0;
       const totalOT = otPay1_5 + otPay2_0 + otPay3_0;
+      const totalWage = wage * workDays;
+      const grandTotal = totalWage + totalOT;
 
       document.getElementById("result").innerHTML = `
+        ค่าแรงรวม: ${totalWage.toFixed(2)} บาท<br>
         ค่าโอทีที่ได้รับ:<br>
         OT x1.5: ${otPay1_5.toFixed(2)} บาท<br>
         OT x2.0: ${otPay2_0.toFixed(2)} บาท<br>
         OT x3.0: ${otPay3_0.toFixed(2)} บาท<br>
-        <strong>รวมทั้งหมด: ${totalOT.toFixed(2)} บาท</strong>
+        รวมค่าโอที: ${totalOT.toFixed(2)} บาท<br>
+        <strong>รวมรายได้ทั้งหมด: ${grandTotal.toFixed(2)} บาท</strong>
       `;
     }
   </script>
