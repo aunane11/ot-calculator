@@ -42,7 +42,10 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
-      box-sizing: border-box;
+    }
+
+    .radio-group {
+      margin-top: 10px;
     }
 
     button {
@@ -55,7 +58,6 @@
       border-radius: 8px;
       font-size: 18px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
 
     button:hover {
@@ -65,7 +67,6 @@
     .result {
       margin-top: 25px;
       font-size: 18px;
-      font-weight: 500;
       color: #004d40;
       line-height: 1.6;
     }
@@ -79,67 +80,80 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>เครื่องคำนวณค่าโอที</h2>
-    <label for="wage">ค่าแรงต่อวัน (บาท):</label>
-    <input type="number" id="wage" placeholder="เช่น 357">
+<div class="container">
+  <h2>เครื่องคำนวณค่าโอที</h2>
 
-    <label for="workDays">จำนวนวันที่ทำงาน:</label>
-    <input type="number" id="workDays" placeholder="เช่น 22">
-
-    <label for="ot1_5">จำนวนชั่วโมง OT x1.5:</label>
-    <input type="number" id="ot1_5" placeholder="เช่น 2">
-
-    <label for="ot2_0">จำนวนชั่วโมง OT x2.0:</label>
-    <input type="number" id="ot2_0" placeholder="เช่น 1">
-
-    <label for="ot3_0">จำนวนชั่วโมง OT x3.0:</label>
-    <input type="number" id="ot3_0" placeholder="เช่น 0.5">
-
-    <button onclick="calculateOT()">คำนวณ</button>
-
-    <div class="result" id="result"></div>
-
-    <div class="copyright">
-      พัฒนาโดยแผนกทรัพยากรบุคคล บริษัท ยูโรเปี้ยนฟู้ด จำกัด (มหาชน)
-    </div>
+  <label>ประเภทรายได้:</label>
+  <div class="radio-group">
+    <input type="radio" name="salaryType" value="daily" checked> รายวัน
+    <input type="radio" name="salaryType" value="monthly"> รายเดือน
   </div>
 
-  <script>
-    function calculateOT() {
-      const wage = parseFloat(document.getElementById("wage").value);
-      const workDays = parseFloat(document.getElementById("workDays").value) || 0;
-      const ot1_5 = parseFloat(document.getElementById("ot1_5").value) || 0;
-      const ot2_0 = parseFloat(document.getElementById("ot2_0").value) || 0;
-      const ot3_0 = parseFloat(document.getElementById("ot3_0").value) || 0;
+  <label for="salary">ค่าแรง / เงินเดือน (บาท):</label>
+  <input type="number" id="salary" placeholder="เช่น 357 หรือ 15000">
 
-      if (isNaN(wage)) {
-        document.getElementById("result").textContent = "กรุณากรอกค่าแรงให้ถูกต้อง";
-        return;
-      }
+  <label for="workDays">จำนวนวันที่ทำงาน:</label>
+  <input type="number" id="workDays" placeholder="เช่น 22">
 
-      const hourlyRate = wage / 8;
-      const otPay1_5 = hourlyRate * 1.5 * ot1_5;
-      const otPay2_0 = hourlyRate * 2.0 * ot2_0;
-      const otPay3_0 = hourlyRate * 3.0 * ot3_0;
-      const totalOT = otPay1_5 + otPay2_0 + otPay3_0;
-      const totalWage = wage * workDays;
-      const grandTotal = totalWage + totalOT;
+  <label for="ot1_5">จำนวนชั่วโมง OT x1.5:</label>
+  <input type="number" id="ot1_5">
 
-      document.getElementById("result").innerHTML = `
-        ค่าแรงรวม: ${totalWage.toFixed(2)} บาท<br>
-        ค่าโอทีที่ได้รับ:<br>
-        OT x1.5: ${otPay1_5.toFixed(2)} บาท<br>
-        OT x2.0: ${otPay2_0.toFixed(2)} บาท<br>
-        OT x3.0: ${otPay3_0.toFixed(2)} บาท<br>
-        รวมค่าโอที: ${totalOT.toFixed(2)} บาท<br>
-        <strong>รวมรายได้ทั้งหมด: ${grandTotal.toFixed(2)} บาท</strong><br>
-        หมายเหตุ / ข้อควรทราบ <br>
-        1.ยอดรายได้นี้ยังไม่หักค่าขาด ลา มาสาย หรือรายการหักอื่นๆตามระเบียบบริษัท โปรดตรวจสอบสลิปเงินเดือนจริงอีกครั้ง<br>
-        2.ข้อมูลเงินเดือนถือเป็นความลับส่วนบุคคล ห้ามเผยแพร่ ส่งต่อ หรือแชร์ลงในกลุ่มหรือโซเชียลมีเดียโดยเด็ดขาด<br>
-        3.การละเมิดข้อห้ามข้างต้น อาจมีผลต่อการดำเนินการทางวินัยตามระเบียบบริษัท
-      `;
-    }
-  </script>
+  <label for="ot2_0">จำนวนชั่วโมง OT x2.0:</label>
+  <input type="number" id="ot2_0">
+
+  <label for="ot3_0">จำนวนชั่วโมง OT x3.0:</label>
+  <input type="number" id="ot3_0">
+
+  <button onclick="calculateOT()">คำนวณ</button>
+
+  <div class="result" id="result"></div>
+
+  <div class="copyright">
+    พัฒนาโดยแผนกทรัพยากรบุคคล บริษัท ยูโรเปี้ยนฟู้ด จำกัด (มหาชน)
+  </div>
+</div>
+
+<script>
+function calculateOT() {
+  const salary = parseFloat(document.getElementById("salary").value);
+  const workDays = parseFloat(document.getElementById("workDays").value) || 0;
+  const ot1_5 = parseFloat(document.getElementById("ot1_5").value) || 0;
+  const ot2_0 = parseFloat(document.getElementById("ot2_0").value) || 0;
+  const ot3_0 = parseFloat(document.getElementById("ot3_0").value) || 0;
+
+  const salaryType = document.querySelector('input[name="salaryType"]:checked').value;
+
+  if (isNaN(salary)) {
+    document.getElementById("result").textContent = "กรุณากรอกข้อมูลให้ถูกต้อง";
+    return;
+  }
+
+  let hourlyRate;
+  let baseIncome;
+
+  if (salaryType === "monthly") {
+    hourlyRate = salary / 30 / 8;
+    baseIncome = salary;
+  } else {
+    hourlyRate = salary / 8;
+    baseIncome = salary * workDays;
+  }
+
+  const otPay1_5 = hourlyRate * 1.5 * ot1_5;
+  const otPay2_0 = hourlyRate * 2.0 * ot2_0;
+  const otPay3_0 = hourlyRate * 3.0 * ot3_0;
+  const totalOT = otPay1_5 + otPay2_0 + otPay3_0;
+  const grandTotal = baseIncome + totalOT;
+
+  document.getElementById("result").innerHTML = `
+    รายได้ปกติ: ${baseIncome.toFixed(2)} บาท<br>
+    OT x1.5: ${otPay1_5.toFixed(2)} บาท<br>
+    OT x2.0: ${otPay2_0.toFixed(2)} บาท<br>
+    OT x3.0: ${otPay3_0.toFixed(2)} บาท<br>
+    รวมค่าโอที: ${totalOT.toFixed(2)} บาท<br>
+    <strong>รวมรายได้ทั้งหมด: ${grandTotal.toFixed(2)} บาท</strong>
+  `;
+}
+</script>
 </body>
 </html>
